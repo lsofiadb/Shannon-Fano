@@ -1,5 +1,7 @@
-package multimedia2;
+package model;
 
+import model.Alfabeto;
+import view.ShannonFanoJFrame;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;

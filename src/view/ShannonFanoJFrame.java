@@ -1,4 +1,4 @@
-package multimedia2;
+package view;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -17,6 +17,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
 import javax.swing.table.DefaultTableModel;
+import model.ShannonFano;
 
 public class ShannonFanoJFrame extends JFrame {
     

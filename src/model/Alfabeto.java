@@ -1,4 +1,4 @@
-package multimedia2;
+package model;
 
 import java.util.Comparator;
 
