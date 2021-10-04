@@ -7,9 +7,9 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 public class ShannonFano {
-  private BTree shannonFanoTree = new BTree();
+
   
-  private ArrayList<Alphabet> alphabet = new ArrayList<>();
+  private ArrayList<Alfabeto> alfabeto = new ArrayList<>();
   
   protected ShannonFanoJFrame frame = null;
   
@@ -18,28 +18,24 @@ public class ShannonFano {
   public ShannonFano() {}
   
   public ShannonFano(String s) {
-    buildAlphabet(s);
-    Collections.sort(this.alphabet, new Alphabet.sortAlphabet());
+    construirAlfabeto(s);
+    Collections.sort(this.alfabeto, new Alfabeto.ordenarAlfabeto());
     balanceTree();
-    this.shannonFanoTree.orderTree(this.shannonFanoTree.getRootNode());
-    this.shannonFanoTree.preOrderTree(this.shannonFanoTree.getRootNode());
+   
   }
   
   public void run(String s) {
-    buildAlphabet(s);
-    Collections.sort(this.alphabet, new Alphabet.sortAlphabet());
+    construirAlfabeto(s);
+    Collections.sort(this.alfabeto, new Alfabeto.ordenarAlfabeto());
     balanceTree();
-    this.shannonFanoTree.orderTree(this.shannonFanoTree.getRootNode());
-    this.shannonFanoTree.preOrderTree(this.shannonFanoTree.getRootNode());
   }
   
   private void balanceTree() {
     String root = shannonFanoRootString();
-    this.shannonFanoTree.insert(new Node(root));
-    buildTree(root);
+    construirArbol(root);
   }
   
-  private void buildTree(String sfRoot) {
+  private void construirArbol(String sfRoot) {
     if (sfRoot.length() > 3) {
       int vLeft = 0;
       int vRight = 0;
@@ -49,10 +45,10 @@ public class ShannonFano {
         int indexChar = alphabetCharIndex(c);
         if (indexChar != -1)
           if (vLeft <= vRight) {
-            vLeft += ((Alphabet)this.alphabet.get(indexChar)).getFa();
+            vLeft += ((Alfabeto)this.alfabeto.get(indexChar)).getFi();
             left = left.concat(Character.toString(c)).concat(", ");
           } else {
-            vRight += ((Alphabet)this.alphabet.get(indexChar)).getFa();
+            vRight += ((Alfabeto)this.alfabeto.get(indexChar)).getFi();
             right = right.concat(Character.toString(c)).concat(", ");
           }  
       } 
@@ -60,11 +56,8 @@ public class ShannonFano {
       right = right.subSequence(0, right.length() - 2).toString();
       updateCodeword(left.replace(", ", ""), '0');
       updateCodeword(right.replace(", ", ""), '1');
-      Node temp = this.shannonFanoTree.search(this.shannonFanoTree.getRootNode(), sfRoot);
-      temp.setLeftChild(new Node(left));
-      temp.setRightChild(new Node(right));
-      buildTree(left);
-      buildTree(right);
+      construirArbol(left);
+      construirArbol(right);
     } 
   }
   
@@ -72,15 +65,15 @@ public class ShannonFano {
     for (char c : s.toCharArray()) {
       int index = alphabetCharIndex(c);
       if (index != -1)
-        ((Alphabet)this.alphabet.get(index)).setCodeword(((Alphabet)this.alphabet.get(index)).getCodeword().concat(Character.toString(bit))); 
+        ((Alfabeto)this.alfabeto.get(index)).setCodeword(((Alfabeto)this.alfabeto.get(index)).getCodeword().concat(Character.toString(bit))); 
     } 
   }
   
   private String shannonFanoRootString() {
     String root = new String();
     int i = 1;
-    for (Alphabet a : this.alphabet) {
-      if (i == this.alphabet.size()) {
+    for (Alfabeto a : this.alfabeto) {
+      if (i == this.alfabeto.size()) {
         root = root.concat(Character.toString(a.getSi()));
       } else {
         root = root.concat(Character.toString(a.getSi())).concat(", ");
@@ -90,21 +83,21 @@ public class ShannonFano {
     return root;
   }
   
-  private void buildAlphabet(String s) {
+  private void construirAlfabeto(String s) {
     int stringSize = s.length();
       System.out.println("string size"+stringSize);
     for (char c : s.toCharArray()) {
       int index = alphabetCharIndex(c);
       if (index == -1) {
-        this.alphabet.add(new Alphabet(c, 1, 1.0D / stringSize));
+        this.alfabeto.add(new Alfabeto(c, 1, 1.0D / stringSize));
           
       } else {
-        int fa = ((Alphabet)this.alphabet.get(index)).getFa() + 1;
-          System.out.println("fa antes"+fa);
-        ((Alphabet)this.alphabet.get(index)).setFa(fa);
-        System.out.println("fa despues"+fa);
-        double pi =(double)fa/(double)stringSize;
-        ((Alphabet)this.alphabet.get(index)).setPi(pi);
+        int fi = ((Alfabeto)this.alfabeto.get(index)).getFi() + 1;
+          System.out.println("fa antes"+fi);
+        ((Alfabeto)this.alfabeto.get(index)).setFi(fi);
+        System.out.println("fa despues"+fi);
+        double pi =(double)fi/(double)stringSize;
+        ((Alfabeto)this.alfabeto.get(index)).setPi(pi);
        
       } 
     } 
@@ -115,23 +108,23 @@ public class ShannonFano {
     for (char c : s.toCharArray()) {
       int index = alphabetCharIndex(c);
       if (index != -1)
-        cod = cod.concat(((Alphabet)this.alphabet.get(index)).getCodeword()); 
+        cod = cod.concat(((Alfabeto)this.alfabeto.get(index)).getCodeword()); 
     } 
     return cod;
   }
   
   public double averageLenght() {
     double avg = 0.0D;
-    for (Alphabet a : this.alphabet)
+    for (Alfabeto a : this.alfabeto)
       avg += a.getPi() * a.getCodeword().length(); 
     return avg;
   }
   
-  public double entropy() {
-    double entropy = 0.0D;
-    for (Alphabet a : this.alphabet)
-      entropy += a.getPi() * log2(1.0D / a.getPi()); 
-    return entropy;
+  public double calcularEntropia() {
+    double entropia = 0.0D;
+    for (Alfabeto a : this.alfabeto)
+      entropia += a.getPi() * log2(1.0D / a.getPi()); 
+    return entropia;
   }
   
   private double log2(double n) {
@@ -139,23 +132,23 @@ public class ShannonFano {
   }
   
   private int alphabetCharIndex(char c) {
-    if (this.alphabet.isEmpty())
+    if (this.alfabeto.isEmpty())
       return -1; 
     int index = 0;
-    for (Alphabet a : this.alphabet) {
+    for (Alfabeto a : this.alfabeto) {
       if (c == a.getSi())
         return index; 
       index++;
     } 
     return -1;
   }
-  
-  public String decode(String compress) {
+  /*Decodifica el mensaje codificado, obtiene el original*/
+  public String decodificar(String compress) {
     String aux = new String();
     String word = new String();
     for (int i = 0; i < compress.length(); i++) {
       aux = aux.concat(compress.substring(i, i + 1));
-      for (Alphabet a : this.alphabet) {
+      for (Alfabeto a : this.alfabeto) {
         if (a.getCodeword().equalsIgnoreCase(aux)) {
           word = word.concat(Character.toString(a.getSi()));
           aux = "";
@@ -166,23 +159,20 @@ public class ShannonFano {
   }
   
   public void writeTable() {
-    JTable tableInitial = this.frame.getjTableInitial();
+    JTable tableInicial = this.frame.getjTableInicial();
     JTable tableFinal = this.frame.getjTableFinal();
-    DefaultTableModel tmi = (DefaultTableModel)tableInitial.getModel();
+    DefaultTableModel tmi = (DefaultTableModel)tableInicial.getModel();
     DefaultTableModel tmf = (DefaultTableModel)tableFinal.getModel();
-    for (Alphabet a : this.alphabet) {
+    for (Alfabeto a : this.alfabeto) {
         System.out.println("asdsadasdasd"+new String (this.df.format(a.getPi())));
-      tmi.addRow(new Object[] { new String(Character.toString(a.getSi())), new String(Integer.toString(a.getFa())), new String(this.df.format(a.getPi())) });
-      tmf.addRow(new Object[] { new String(Character.toString(a.getSi())), new String(Integer.toString(a.getFa())), new String(this.df.format(a.getPi())), new String(a.getCodeword()), new String(Integer.toString(a.getCodeword().length())) });
+      tmi.addRow(new Object[] { new String(Character.toString(a.getSi())), new String(Integer.toString(a.getFi())), new String(this.df.format(a.getPi())) });
+      tmf.addRow(new Object[] { new String(Character.toString(a.getSi())), new String(Integer.toString(a.getFi())), new String(this.df.format(a.getPi())), new String(a.getCodeword()), new String(Integer.toString(a.getCodeword().length())) });
     } 
   }
   
-  public BTree getShannonFanoTree() {
-    return this.shannonFanoTree;
-  }
-  
-  public ArrayList<Alphabet> getAlphabet() {
-    return this.alphabet;
+
+  public ArrayList<Alfabeto> getAlfabeto() {
+    return this.alfabeto;
   }
   
   public void setFrame(ShannonFanoJFrame sff) {

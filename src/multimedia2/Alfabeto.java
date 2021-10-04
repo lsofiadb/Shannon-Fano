@@ -2,33 +2,33 @@ package multimedia2;
 
 import java.util.Comparator;
 
-public class Alphabet {
+public class Alfabeto {
   private char si;
   
-  private int fa;
+  private int fi;
   
   private double pi;
   
   private String codeword;
   
-  public Alphabet() {}
+  public Alfabeto() {}
   
-  public Alphabet(char si, int fa, double pi) {
+  public Alfabeto(char si, int fi, double pi) {
     this.si = si;
-    this.fa = fa;
+    this.fi = fi;
     this.pi = pi;
     setCodeword(new String());
       System.out.println(pi);
   }
   
-  public Alphabet(char si, String codeword) {
+  public Alfabeto(char si, String codeword) {
     this.si = si;
     this.codeword = codeword;
   }
 
     @Override
     public String toString() {
-        return "Alphabet{" + "si=" + si + ", fa=" + fa + ", pi=" + pi + ", codeword=" + codeword + '}';
+        return "Alphabet{" + "si=" + si + ", fi=" + fi + ", pi=" + pi + ", codeword=" + codeword + '}';
     }
   
   
@@ -37,12 +37,12 @@ public class Alphabet {
     return this.si;
   }
   
-  public void setFa(int fa) {
-    this.fa = fa;
+  public void setFi(int fi) {
+    this.fi = fi;
   }
   
-  public int getFa() {
-    return this.fa;
+  public int getFi() {
+    return this.fi;
   }
   
   public void setSi(char si) {
@@ -66,9 +66,9 @@ public class Alphabet {
     this.codeword = codeword;
   }
   
-  public static class sortAlphabet implements Comparator<Alphabet> {
-    public int compare(Alphabet a0, Alphabet a1) {
-      return a1.getFa() - a0.getFa();
+  public static class ordenarAlfabeto implements Comparator<Alfabeto> {
+    public int compare(Alfabeto a0, Alfabeto a1) {
+      return a1.getFi() - a0.getFi();
     }
   }
 }
