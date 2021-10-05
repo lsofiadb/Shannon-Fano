@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
@@ -49,12 +50,14 @@ public class ShannonFanoJFrame extends JFrame {
   private ShannonFano shannonFanno;
   private DecimalFormat decimalFormat;
   
-  
   //Constructor 
   public ShannonFanoJFrame() {
     this.shannonFanno = null;
     this.decimalFormat = new DecimalFormat("#.#####");
     initComponents();
+    this.setLocationRelativeTo(this);
+    /*JPanelDecodificacion por defecto no se muestra, al crear el JFrame,
+    posteriormente con el evento del JButtonCodificar sera visible*/
     this.jPanelDecodificacion.setVisible(false);
   }
   
@@ -81,6 +84,8 @@ public class ShannonFanoJFrame extends JFrame {
     //Tabla final 
     this.jTableFinal = new JTable();
     
+    /*JPanels para agrupar elementos del JFrame posteriormente
+    a través de GroupLayaouts*/
     this.jPanel1 = new JPanel();
     this.jPanel2 = new JPanel();
     
@@ -108,9 +113,10 @@ public class ShannonFanoJFrame extends JFrame {
     setTitle("Shannon Fano - Codificación y Decodificación");
     setResizable(false);
     
-    /*Texto del JLabel y del JButton*/
+    /*Texto del JLabel y del JButton: elementos del JPanel superior*/
     this.jLabelString.setText("String");
     this.jButtonCodificar.setText("Codificar");
+    this.jButtonCodificar.setBackground(new Color(162,217,206));
     /*Captura el evento del JButtonCodificar*/
     this.jButtonCodificar.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent evt) {
@@ -120,6 +126,7 @@ public class ShannonFanoJFrame extends JFrame {
     
     /*Texto del JButton y captura del evento*/
     this.jButtonLimpiar.setText("Limpiar");
+    this.jButtonLimpiar.setBackground(new Color(162,217,206));
     this.jButtonLimpiar.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent evt) {
             ShannonFanoJFrame.this.jButtonClearActionPerformed(evt);
@@ -132,7 +139,7 @@ public class ShannonFanoJFrame extends JFrame {
     jPanelInputStringLayout.setHorizontalGroup(jPanelInputStringLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(jPanelInputStringLayout.createSequentialGroup().addContainerGap().addComponent(this.jLabelString).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(this.jTextFieldEntradaString, -2, 279, -2).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(this.jButtonCodificar).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(this.jButtonLimpiar).addContainerGap(-1, 32767)));
     jPanelInputStringLayout.setVerticalGroup(jPanelInputStringLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(jPanelInputStringLayout.createSequentialGroup().addContainerGap().addGroup(jPanelInputStringLayout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(this.jLabelString).addComponent(this.jTextFieldEntradaString, -2, -1, -2).addComponent(this.jButtonCodificar).addComponent(this.jButtonLimpiar)).addContainerGap(-1, 32767)));
     
-    //Panel izquierdo que contendrá la tabla inicial 
+    //JPanel izquierdo que contendrá la tabla inicial 
     this.jPanelTablaInicial.setBorder(BorderFactory.createTitledBorder("Tabla Inicial"));
     this.jPanelTablaInicial.setPreferredSize(new Dimension(441, 351));
     
@@ -155,6 +162,8 @@ public class ShannonFanoJFrame extends JFrame {
     this.jTableInicial.getColumnModel().getColumn(0).setResizable(false);
     this.jTableInicial.getColumnModel().getColumn(1).setResizable(false);
     this.jTableInicial.getColumnModel().getColumn(2).setResizable(false);
+    
+    /*GroupLayaout para la tabla inicial, con el scroll respectivo*/
     GroupLayout jPanelTableIntLayout = new GroupLayout(this.jPanelTablaInicial);
     this.jPanelTablaInicial.setLayout(jPanelTableIntLayout);
     jPanelTableIntLayout.setHorizontalGroup(jPanelTableIntLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(jPanelTableIntLayout.createSequentialGroup().addContainerGap().addComponent(this.jScrollPane1, -1, 409, 32767).addContainerGap()));
@@ -171,22 +180,29 @@ public class ShannonFanoJFrame extends JFrame {
           }
         });
     this.jScrollPane2.setViewportView(this.jTableFinal);
+    
+    /*GroupLayaout para el JPanel de la tabla final*/
     GroupLayout jPanelFinalTableLayout = new GroupLayout(this.jPanelTablaFinal);
     this.jPanelTablaFinal.setLayout(jPanelFinalTableLayout);
     jPanelFinalTableLayout.setHorizontalGroup(jPanelFinalTableLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(jPanelFinalTableLayout.createSequentialGroup().addContainerGap().addComponent(this.jScrollPane2, -1, 409, 32767).addContainerGap()));
     jPanelFinalTableLayout.setVerticalGroup(jPanelFinalTableLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(jPanelFinalTableLayout.createSequentialGroup().addContainerGap().addComponent(this.jScrollPane2, -1, 334, 32767).addContainerGap()));
-    this.jPanel2.setBorder(BorderFactory.createTitledBorder(null, "Results", 1, 0));
+    
+    /*JPanel intermedio del JFrame con los respectivos JLabels de resultados*/
+    this.jPanel2.setBorder(BorderFactory.createTitledBorder(null, "Resultados", 1, 0));
     this.jLabel2.setText("Entropia");
     this.jLabelEntropia.setText("H = 0.0");
     this.jLabel3.setText("Average Codeword");
     this.jLabelAvgCod.setText("L = 0.0");
     this.jLabel4.setText("Coding Redundancy");
     this.jLabelRedundancia.setText("L-H = 0.0");
+    
+    /*GroupLayaout del JPanel intermedio y sus JLabels*/
     GroupLayout jPanel2Layout = new GroupLayout(this.jPanel2);
     this.jPanel2.setLayout(jPanel2Layout);
     jPanel2Layout.setHorizontalGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(jPanel2Layout.createSequentialGroup().addContainerGap().addGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(this.jLabelEntropia, -2, 124, -2).addComponent(this.jLabel2).addComponent(this.jLabelAvgCod, -2, 124, -2).addComponent(this.jLabel3).addGroup(GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(this.jLabelRedundancia, -2, 124, -2).addComponent(this.jLabel4))).addContainerGap(-1, 32767)));
     jPanel2Layout.setVerticalGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(jPanel2Layout.createSequentialGroup().addGap(52, 52, 52).addComponent(this.jLabel2).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(this.jLabelEntropia).addGap(39, 39, 39).addComponent(this.jLabel3).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(this.jLabelAvgCod).addGap(42, 42, 42).addComponent(this.jLabel4).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(this.jLabelRedundancia).addContainerGap(116, 32767)));
-    //Grouplayout panel 1
+    
+    /*Grouplayout del JPanel1 que agrupa el JPanel2:intermedio */
     GroupLayout jPanel1Layout = new GroupLayout(this.jPanel1);
     this.jPanel1.setLayout(jPanel1Layout);
     jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(jPanel1Layout.createSequentialGroup().addContainerGap().addComponent(this.jPanel2, -2, -1, -2)));
@@ -198,11 +214,14 @@ public class ShannonFanoJFrame extends JFrame {
     this.jLabelMensajeDecodificado.setText(" ");
     this.jLabel6.setText("Mensaje Decodificado");
     this.jButtonDecodificar.setText("Decodificar");
+    this.jButtonDecodificar.setBackground(new Color(88, 214, 141));
     this.jButtonDecodificar.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent evt) {
             ShannonFanoJFrame.this.jButtonDecodeActionPerformed(evt);
           }
         });
+    
+    /*GroupLayaout del JPanel inferior del JFrame, con sus elementos*/
     GroupLayout jPanelDecodeLayout = new GroupLayout(this.jPanelDecodificacion);
     this.jPanelDecodificacion.setLayout(jPanelDecodeLayout);
     jPanelDecodeLayout.setHorizontalGroup(jPanelDecodeLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(jPanelDecodeLayout.createSequentialGroup().addContainerGap().addGroup(jPanelDecodeLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(jPanelDecodeLayout.createSequentialGroup().addComponent(this.jLabel5).addGap(365, 365, 365).addComponent(this.jButtonDecodificar)).addComponent(this.jLabelMensajeCodificado, -2, 416, -2)).addGap(49, 49, 49).addGroup(jPanelDecodeLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(this.jLabel6).addComponent(this.jLabelMensajeDecodificado, -1, -1, 32767)).addContainerGap()));
@@ -210,8 +229,10 @@ public class ShannonFanoJFrame extends JFrame {
     this.jLabelMensajeCodificado.getAccessibleContext().setAccessibleName("");
     this.jLabelMensajeDecodificado.getAccessibleContext().setAccessibleName("");
     
+    /*GroupLayaout de todos los elementos del JFrame: JPanels, JLabels, etc*/
     GroupLayout layout = new GroupLayout(getContentPane());
     getContentPane().setLayout(layout);
+    getContentPane().setBackground(new Color(51,204,255));
     layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false).addGroup(GroupLayout.Alignment.LEADING, layout.createSequentialGroup().addComponent(this.jPanelTablaInicial, -2, -1, -2).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(this.jPanel1, -2, -1, -2).addGap(12, 12, 12).addComponent(this.jPanelTablaFinal, -2, -1, -2)).addComponent(this.jPanelSuperior, GroupLayout.Alignment.LEADING, -2, -1, -2).addComponent(this.jPanelDecodificacion, GroupLayout.Alignment.LEADING, -1, -1, 32767)).addContainerGap(-1, 32767)));
     layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(this.jPanelSuperior, -2, -1, -2).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false).addComponent(this.jPanelTablaInicial, GroupLayout.Alignment.LEADING, -1, 374, 32767).addComponent(this.jPanelTablaFinal, GroupLayout.Alignment.LEADING, -1, 374, 32767).addComponent(this.jPanel1, -1, -1, 32767)).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(this.jPanelDecodificacion, -2, -1, -2).addContainerGap(-1, 32767)));
     pack();
@@ -229,21 +250,24 @@ public class ShannonFanoJFrame extends JFrame {
       limpiarTableIni(this.jTableInicial);
       limpiarTableFinal(this.jTableFinal);
       
-      //Envia el frame a la clase ShannonFano que realiza la codificacion y decodificacion*/
+      //Envia el JFrame a la clase ShannonFano que realiza la codificacion y decodificacion*/
       this.shannonFanno = new ShannonFano();
       this.shannonFanno.setFrame(this);
       this.shannonFanno.run(message);
       this.shannonFanno.writeTable();
+      /*Calcula los valores de las variables del JPanelIntermedio*/
       this.jLabelEntropia.setText("H = ".concat(this.decimalFormat.format(this.shannonFanno.calcularEntropia())));
       this.jLabelAvgCod.setText("L = ".concat(this.decimalFormat.format(this.shannonFanno.averageLenght())));
       this.jLabelRedundancia.setText("L-H = ".concat(this.decimalFormat.format(this.shannonFanno.averageLenght() - this.shannonFanno.calcularEntropia())));
+      /*Muestra el JPanel inferior con la codificacion*/
       this.jPanelDecodificacion.setVisible(true);
       this.jLabelMensajeDecodificado.setText("");
-      this.jLabelMensajeCodificado.setText(this.shannonFanno.compress(message));
+      /*Calcula la codificacion del mensaje*/
+      this.jLabelMensajeCodificado.setText(this.shannonFanno.compress(message)); 
     } 
   }
   
-  /*Realiza la decodificación del mensaje codificado*/
+  /*Realiza la decodificación del mensaje codificado y la muestra en el respectivo JLabel*/
   private void jButtonDecodeActionPerformed(ActionEvent evt) {
     this.jLabelMensajeDecodificado.setText(this.shannonFanno.decodificar(this.jLabelMensajeCodificado.getText()));
   }

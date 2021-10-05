@@ -10,33 +10,71 @@ import javax.swing.table.DefaultTableModel;
 
 public class ShannonFano {
 
-  
   private ArrayList<Alfabeto> alfabeto = new ArrayList<>();
-  
-  protected ShannonFanoJFrame frame = null;
-  
+  protected ShannonFanoJFrame jFrameShannonFano = null;
   private DecimalFormat df = new DecimalFormat("#.#####");
   
+  /*Constructor*/
   public ShannonFano() {}
   
-  public ShannonFano(String s) {
-    construirAlfabeto(s);
+  /*Construye el alfabeto, lo ordena, y  balancea el arbol*/
+  public void run(String mensaje) {
+    construirAlfabeto(mensaje);
     Collections.sort(this.alfabeto, new Alfabeto.ordenarAlfabeto());
-    balanceTree();
-   
+    balancearArbol();
   }
   
-  public void run(String s) {
-    construirAlfabeto(s);
-    Collections.sort(this.alfabeto, new Alfabeto.ordenarAlfabeto());
-    balanceTree();
+  private int alphabetCharIndex(char c) {
+    if (this.alfabeto.isEmpty())
+      return -1; 
+    int index = 0;
+    for (Alfabeto a : this.alfabeto) {
+      if (c == a.getSi())
+        return index; 
+      index++;
+    } 
+    return -1;
   }
   
-  private void balanceTree() {
+  /*Construye el alfabeto de acuerdo al mensaje ingresado*/
+  private void construirAlfabeto(String mensaje) {
+    int stringSize = mensaje.length();
+    for (char c : mensaje.toCharArray()) {
+      int index = alphabetCharIndex(c);
+      if (index == -1) {
+        this.alfabeto.add(new Alfabeto(c, 1, 1.0D / stringSize));
+          
+      } else {
+        int fi = ((Alfabeto)this.alfabeto.get(index)).getFi() + 1;
+        ((Alfabeto)this.alfabeto.get(index)).setFi(fi);
+         double pi =(double)fi/(double)stringSize;
+        ((Alfabeto)this.alfabeto.get(index)).setPi(pi);
+       
+      } 
+    } 
+  }
+  
+  private String shannonFanoRootString() {
+    String root = new String();
+    int i = 1;
+    for (Alfabeto a : this.alfabeto) {
+      if (i == this.alfabeto.size()) {
+        root = root.concat(Character.toString(a.getSi()));
+      } else {
+        root = root.concat(Character.toString(a.getSi())).concat(", ");
+      } 
+      i++;
+    } 
+    return root;
+  }
+  
+  /*A partir de la raiz balancea el arbol*/
+  private void balancearArbol() {
     String root = shannonFanoRootString();
     construirArbol(root);
   }
   
+  /*Al construir el arbol se asigna a las ramas 0 a la izquierda y 1 a la derecha*/
   private void construirArbol(String sfRoot) {
     if (sfRoot.length() > 3) {
       int vLeft = 0;
@@ -71,50 +109,18 @@ public class ShannonFano {
     } 
   }
   
-  private String shannonFanoRootString() {
-    String root = new String();
-    int i = 1;
-    for (Alfabeto a : this.alfabeto) {
-      if (i == this.alfabeto.size()) {
-        root = root.concat(Character.toString(a.getSi()));
-      } else {
-        root = root.concat(Character.toString(a.getSi())).concat(", ");
-      } 
-      i++;
-    } 
-    return root;
-  }
-  
-  private void construirAlfabeto(String s) {
-    int stringSize = s.length();
-      System.out.println("string size"+stringSize);
-    for (char c : s.toCharArray()) {
-      int index = alphabetCharIndex(c);
-      if (index == -1) {
-        this.alfabeto.add(new Alfabeto(c, 1, 1.0D / stringSize));
-          
-      } else {
-        int fi = ((Alfabeto)this.alfabeto.get(index)).getFi() + 1;
-          System.out.println("fa antes"+fi);
-        ((Alfabeto)this.alfabeto.get(index)).setFi(fi);
-        System.out.println("fa despues"+fi);
-        double pi =(double)fi/(double)stringSize;
-        ((Alfabeto)this.alfabeto.get(index)).setPi(pi);
-       
-      } 
-    } 
-  }
-  
+  /*Realiza la codificacion del mensaje*/
   public String compress(String s) {
-    String cod = new String();
+    String codificacion = new String();
     for (char c : s.toCharArray()) {
       int index = alphabetCharIndex(c);
       if (index != -1)
-        cod = cod.concat(((Alfabeto)this.alfabeto.get(index)).getCodeword()); 
+        codificacion = codificacion.concat(((Alfabeto)this.alfabeto.get(index)).getCodeword()); 
     } 
-    return cod;
+    return codificacion;
   }
   
+  /*---------Variables del JPanel Intermedio de los resultados---------*/
   public double averageLenght() {
     double avg = 0.0D;
     for (Alfabeto a : this.alfabeto)
@@ -133,40 +139,31 @@ public class ShannonFano {
     return Math.log(n) / Math.log(2.0D);
   }
   
-  private int alphabetCharIndex(char c) {
-    if (this.alfabeto.isEmpty())
-      return -1; 
-    int index = 0;
-    for (Alfabeto a : this.alfabeto) {
-      if (c == a.getSi())
-        return index; 
-      index++;
-    } 
-    return -1;
-  }
+  /*-----------------------------------------------------------------*/
+  
   /*Decodifica el mensaje codificado, obtiene el original*/
   public String decodificar(String compress) {
     String aux = new String();
-    String word = new String();
+    String mensajeOriginal = new String();
     for (int i = 0; i < compress.length(); i++) {
       aux = aux.concat(compress.substring(i, i + 1));
       for (Alfabeto a : this.alfabeto) {
         if (a.getCodeword().equalsIgnoreCase(aux)) {
-          word = word.concat(Character.toString(a.getSi()));
+          mensajeOriginal = mensajeOriginal.concat(Character.toString(a.getSi()));
           aux = "";
         } 
       } 
     } 
-    return word;
+    return mensajeOriginal;
   }
   
+  /*Asigna los valores a los elementos de las tablas del JFrame*/
   public void writeTable() {
-    JTable tableInicial = this.frame.getjTableInicial();
-    JTable tableFinal = this.frame.getjTableFinal();
+    JTable tableInicial = this.jFrameShannonFano.getjTableInicial();
+    JTable tableFinal = this.jFrameShannonFano.getjTableFinal();
     DefaultTableModel tmi = (DefaultTableModel)tableInicial.getModel();
     DefaultTableModel tmf = (DefaultTableModel)tableFinal.getModel();
     for (Alfabeto a : this.alfabeto) {
-        System.out.println("asdsadasdasd"+new String (this.df.format(a.getPi())));
       tmi.addRow(new Object[] { new String(Character.toString(a.getSi())), new String(Integer.toString(a.getFi())), new String(this.df.format(a.getPi())) });
       tmf.addRow(new Object[] { new String(Character.toString(a.getSi())), new String(Integer.toString(a.getFi())), new String(this.df.format(a.getPi())), new String(a.getCodeword()), new String(Integer.toString(a.getCodeword().length())) });
     } 
@@ -178,6 +175,6 @@ public class ShannonFano {
   }
   
   public void setFrame(ShannonFanoJFrame sff) {
-    this.frame = sff;
+    this.jFrameShannonFano = sff;
   }
 }

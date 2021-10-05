@@ -3,10 +3,11 @@ package model;
 import java.util.Comparator;
 
 public class Alfabeto {
+    /*Simbolos*/
   private char si;
-  
+  /*Frecuencias*/
   private int fi;
-  
+  /*Probabilidades*/
   private double pi;
   
   private String codeword;
@@ -18,7 +19,6 @@ public class Alfabeto {
     this.fi = fi;
     this.pi = pi;
     setCodeword(new String());
-      System.out.println(pi);
   }
   
   public Alfabeto(char si, String codeword) {
@@ -31,8 +31,7 @@ public class Alfabeto {
         return "Alphabet{" + "si=" + si + ", fi=" + fi + ", pi=" + pi + ", codeword=" + codeword + '}';
     }
   
-  
-  
+    /*Getters y Setters*/
   public char getSi() {
     return this.si;
   }
@@ -55,7 +54,6 @@ public class Alfabeto {
   
   public void setPi(double pi) {
     this.pi = pi;
-      System.out.println("pi"+pi);
   }
   
   public String getCodeword() {
