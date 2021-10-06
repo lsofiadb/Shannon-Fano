@@ -187,27 +187,7 @@ public class ShannonFanoJFrame extends JFrame {
     jPanelFinalTableLayout.setHorizontalGroup(jPanelFinalTableLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(jPanelFinalTableLayout.createSequentialGroup().addContainerGap().addComponent(this.jScrollPane2, -1, 409, 32767).addContainerGap()));
     jPanelFinalTableLayout.setVerticalGroup(jPanelFinalTableLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(jPanelFinalTableLayout.createSequentialGroup().addContainerGap().addComponent(this.jScrollPane2, -1, 334, 32767).addContainerGap()));
     
-    /*JPanel intermedio del JFrame con los respectivos JLabels de resultados*/
-    this.jPanel2.setBorder(BorderFactory.createTitledBorder(null, "Resultados", 1, 0));
-    this.jLabel2.setText("Entropia");
-    this.jLabelEntropia.setText("H = 0.0");
-    this.jLabel3.setText("Average Codeword");
-    this.jLabelAvgCod.setText("L = 0.0");
-    this.jLabel4.setText("Coding Redundancy");
-    this.jLabelRedundancia.setText("L-H = 0.0");
-    
-    /*GroupLayaout del JPanel intermedio y sus JLabels*/
-    GroupLayout jPanel2Layout = new GroupLayout(this.jPanel2);
-    this.jPanel2.setLayout(jPanel2Layout);
-    jPanel2Layout.setHorizontalGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(jPanel2Layout.createSequentialGroup().addContainerGap().addGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(this.jLabelEntropia, -2, 124, -2).addComponent(this.jLabel2).addComponent(this.jLabelAvgCod, -2, 124, -2).addComponent(this.jLabel3).addGroup(GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(this.jLabelRedundancia, -2, 124, -2).addComponent(this.jLabel4))).addContainerGap(-1, 32767)));
-    jPanel2Layout.setVerticalGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(jPanel2Layout.createSequentialGroup().addGap(52, 52, 52).addComponent(this.jLabel2).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(this.jLabelEntropia).addGap(39, 39, 39).addComponent(this.jLabel3).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(this.jLabelAvgCod).addGap(42, 42, 42).addComponent(this.jLabel4).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(this.jLabelRedundancia).addContainerGap(116, 32767)));
-    
-    /*Grouplayout del JPanel1 que agrupa el JPanel2:intermedio */
-    GroupLayout jPanel1Layout = new GroupLayout(this.jPanel1);
-    this.jPanel1.setLayout(jPanel1Layout);
-    jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(jPanel1Layout.createSequentialGroup().addContainerGap().addComponent(this.jPanel2, -2, -1, -2)));
-    jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(this.jPanel2, -1, -1, 32767));
-
+   
     /*Elementos del panel inferior del JFrame*/
     this.jLabel5.setText("Mensaje Codificado");
     this.jLabelMensajeCodificado.setText(" ");
@@ -255,10 +235,8 @@ public class ShannonFanoJFrame extends JFrame {
       this.shannonFanno.setFrame(this);
       this.shannonFanno.run(message);
       this.shannonFanno.writeTable();
-      /*Calcula los valores de las variables del JPanelIntermedio*/
-      this.jLabelEntropia.setText("H = ".concat(this.decimalFormat.format(this.shannonFanno.calcularEntropia())));
-      this.jLabelAvgCod.setText("L = ".concat(this.decimalFormat.format(this.shannonFanno.averageLenght())));
-      this.jLabelRedundancia.setText("L-H = ".concat(this.decimalFormat.format(this.shannonFanno.averageLenght() - this.shannonFanno.calcularEntropia())));
+      
+  
       /*Muestra el JPanel inferior con la codificacion*/
       this.jPanelDecodificacion.setVisible(true);
       this.jLabelMensajeDecodificado.setText("");
@@ -281,9 +259,6 @@ public class ShannonFanoJFrame extends JFrame {
     this.jTextFieldEntradaString.setText("");
     limpiarTableIni(this.jTableInicial);
     limpiarTableFinal(this.jTableFinal);
-    this.jLabelEntropia.setText("H = 0.0");
-    this.jLabelAvgCod.setText("L = 0.0");
-    this.jLabelRedundancia.setText("L-H = 0.0");
     
   }
   
